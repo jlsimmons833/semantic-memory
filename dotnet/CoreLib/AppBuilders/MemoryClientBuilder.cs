@@ -94,6 +94,10 @@ public class MemoryClientBuilder
         {
             DefaultLogger.SetLoggerFactory(hostServiceCollection.BuildServiceProvider().GetRequiredService<ILoggerFactory>());
         }
+        else
+        {
+            DefaultLogger.SetLoggerFactory(this._memoryServiceCollection.BuildServiceProvider().GetRequiredService<ILoggerFactory>());
+        }
 
         // List of embedding generators and vector DBs used during the ingestion
         this._embeddingGenerators.Clear();
