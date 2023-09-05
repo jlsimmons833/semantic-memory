@@ -7,6 +7,7 @@ using System.Linq;
 using System.Reflection;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using Microsoft.SemanticKernel.AI.Embeddings;
 using Microsoft.SemanticMemory.AI;
 using Microsoft.SemanticMemory.Configuration;
@@ -15,6 +16,7 @@ using Microsoft.SemanticMemory.ContentStorage.AzureBlobs;
 using Microsoft.SemanticMemory.ContentStorage.DevTools;
 using Microsoft.SemanticMemory.DataFormats.Image;
 using Microsoft.SemanticMemory.DataFormats.Image.AzureFormRecognizer;
+using Microsoft.SemanticMemory.Diagnostics;
 using Microsoft.SemanticMemory.Handlers;
 using Microsoft.SemanticMemory.MemoryStorage;
 using Microsoft.SemanticMemory.MemoryStorage.DevTools;
@@ -87,6 +89,11 @@ public class MemoryClientBuilder
     {
         this._memoryServiceCollection = new ServiceCollection();
         this._hostServiceCollection = hostServiceCollection;
+
+        if (hostServiceCollection != null)
+        {
+            DefaultLogger.SetLoggerFactory(hostServiceCollection.BuildServiceProvider().GetRequiredService<ILoggerFactory>());
+        }
 
         // List of embedding generators and vector DBs used during the ingestion
         this._embeddingGenerators.Clear();
